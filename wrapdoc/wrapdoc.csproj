@@ -67,11 +67,11 @@
     <Compile Include="frmControlSystem.Designer.cs">
       <DependentUpon>frmControlSystem.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmElectromyograph.cs">
+    <Compile Include="frmScope.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmElectromyograph.Designer.cs">
-      <DependentUpon>frmElectromyograph.cs</DependentUpon>
+    <Compile Include="frmScope.Designer.cs">
+      <DependentUpon>frmScope.cs</DependentUpon>
     </Compile>
     <Compile Include="frmInputConfiguration.cs">
       <SubType>Form</SubType>
@@ -108,8 +108,8 @@
     <EmbeddedResource Include="frmControlSystem.resx">
       <DependentUpon>frmControlSystem.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmElectromyograph.resx">
-      <DependentUpon>frmElectromyograph.cs</DependentUpon>
+    <EmbeddedResource Include="frmScope.resx">
+      <DependentUpon>frmScope.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmInputConfiguration.resx">
       <DependentUpon>frmInputConfiguration.cs</DependentUpon>

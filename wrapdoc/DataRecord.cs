@@ -10,10 +10,11 @@ namespace wrapdoc
 {
     public class DataRecord
     {
-        public PointPairList  Data;
+        public static UInt32 MAX_LENGTH = 1000; 
+        
+        public PointPairList Data;
         public string Name;
-
-
+        
 
         public DataRecord(string _name)
         {
@@ -46,6 +47,8 @@ namespace wrapdoc
             lock (Data)
             {
                 Data.Add(newPoint);
+
+                if (Data.Count > MAX_LENGTH) Data.RemoveAt(0);
             }
             return;
         }
@@ -53,6 +56,14 @@ namespace wrapdoc
         public static double getXDateNow()
         {
             return (double)(new XDate(DateTime.Now));
+        }
+
+        public static double getXDateMillisecondsAgo(int milliseconds)
+        {
+            DateTime tempTime = DateTime.Now;
+            tempTime.Subtract(new TimeSpan(0, 0, 0, 0, milliseconds));
+
+            return (double)(new XDate(tempTime));
         }
 
         public void clearRecord()

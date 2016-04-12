@@ -34,13 +34,10 @@ namespace wrapdoc
         {
             mainDockPanel.Parent = this;
             mainDockPanel.BringToFront();
-
-            mainDockPanel.Parent = this;
-            mainDockPanel.BringToFront();
-
+            
             inputConfiguration = new frmInputConfiguration();
 
-            serialConnection = new frmSerialConnection();
+            serialConnection = new frmSerialConnection(this);
 
             dataRecordDictionary = new Dictionary<string, DataRecord>();
 
@@ -50,7 +47,7 @@ namespace wrapdoc
                 connectionToolStripLabel.Text = "Connected";
                 connectionToolStripLabel.ForeColor = Color.Green;
                 inputConfiguration.Show(mainDockPanel, DockState.Document);
-                dataRecordDictionary.Add(serialConnection.dataRecord.Name, serialConnection.dataRecord);
+                dataRecordDictionary.Add(serialConnection._dataRecord.Name, serialConnection._dataRecord);
             }
             else
             {
@@ -61,7 +58,7 @@ namespace wrapdoc
 
             if(DEBUG_MODE)
             {
-                inputConfiguration.Show(mainDockPanel, DockState.Document);
+                //inputConfiguration.Show(mainDockPanel, DockState.Document);
             }
 
             
@@ -75,6 +72,12 @@ namespace wrapdoc
         private void toolStripStatusLabel2_Click(object sender, EventArgs e)
         {
             serialConnection.Show();
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            frmScope newScope = new frmScope(this);
+            newScope.Show(mainDockPanel, DockState.Document);
         }
     }
 }
