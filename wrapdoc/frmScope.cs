@@ -20,8 +20,11 @@ namespace wrapdoc
         double iterator = 0;
         UInt16 samples = 0;
         DateTime lastInterval;
-
         UInt16 _sampleFrequency = 200;
+
+        Size initialSize;
+
+        bool _blPlottingEnabled = true;
         
         public frmScope(frmMain parent)
         {
@@ -51,13 +54,15 @@ namespace wrapdoc
             //zedGraphControl1.GraphPane.XAxis.ScaleFormat = "HH:mm:ss.fff";
             //zedGraphControl1.GraphPane.XAxis.Type = ZedGraph.AxisType.Date;
 
+            initialSize=this.Size;
             lastInterval = DateTime.Now;
             backgroundWorker1.RunWorkerAsync();
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            while (!backgroundWorker1.CancellationPending)
+            Debug.WriteLine("enabled");
+            while (_blPlottingEnabled && !backgroundWorker1.CancellationPending)
             {
 
                 DateTime now = DateTime.Now;
@@ -71,7 +76,7 @@ namespace wrapdoc
                     samples++;
 
                     zedGraphControl1.GraphPane.XAxis.MinAuto = false;
-                    //Debug.WriteLine(iterator-500);
+                    Debug.WriteLine(iterator-500);
                     zedGraphControl1.GraphPane.XAxis.Min = iterator > 1000 ? iterator - 1000 : 0;
                     zedGraphControl1.GraphPane.XAxis.Max = iterator + 5;
 
@@ -91,16 +96,23 @@ namespace wrapdoc
             _sampleFrequency = Convert.ToUInt16(updSamplingFrequency.Value);
         }
 
-        private void frmScope_DockChanged(object sender, EventArgs e)
+        private void frmScope_DockStateChanged(object sender, EventArgs e)
         {
-            if (this.Visible && !backgroundWorker1.IsBusy) backgroundWorker1.RunWorkerAsync();
+
+            if (this.FloatPane != null)
+            {
+                this.FloatPane.FloatWindow.Size = initialSize;
+                btnPlotEnabled.Text = "Enable Plotting";
+                if (!backgroundWorker1.IsBusy) backgroundWorker1.RunWorkerAsync();
+                
+            }
         }
 
         private void frmScope_VisibleChanged(object sender, EventArgs e)
         {
-            if (!this.Visible) backgroundWorker1.CancelAsync();
-            if (this.Visible && !backgroundWorker1.IsBusy) backgroundWorker1.RunWorkerAsync();
-            
+            if (!this.Visible && backgroundWorker1.IsBusy) _blPlottingEnabled = false;
+
+            if (this.Visible ) _blPlottingEnabled=true;
         }
 
         private void chkAutoScaleX_CheckedChanged(object sender, EventArgs e)
@@ -120,5 +132,28 @@ namespace wrapdoc
                 updYScale.Enabled = false;
             }
         }
+
+        private void frmScope_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            
+        }
+
+        private void btnPlotEnabled_Click(object sender, EventArgs e)
+        {
+            if (!backgroundWorker1.IsBusy)
+            {
+                backgroundWorker1.RunWorkerAsync();
+
+                btnPlotEnabled.Text = "Disable Plotting";
+            }
+            else
+            {
+                backgroundWorker1.CancelAsync();
+
+                btnPlotEnabled.Text = "Enable Plotting";
+            }
+        }
+
+        
     }
 }

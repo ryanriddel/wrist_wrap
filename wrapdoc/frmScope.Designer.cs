@@ -36,7 +36,7 @@
             this.updXScale = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnPlotEnabled = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.label4 = new System.Windows.Forms.Label();
             this.updSamplingFrequency = new System.Windows.Forms.NumericUpDown();
@@ -143,14 +143,15 @@
             this.treeView1.Size = new System.Drawing.Size(121, 269);
             this.treeView1.TabIndex = 7;
             // 
-            // button1
+            // btnPlotEnabled
             // 
-            this.button1.Location = new System.Drawing.Point(3, 199);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(121, 23);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Start Plotting";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnPlotEnabled.Location = new System.Drawing.Point(3, 199);
+            this.btnPlotEnabled.Name = "btnPlotEnabled";
+            this.btnPlotEnabled.Size = new System.Drawing.Size(121, 23);
+            this.btnPlotEnabled.TabIndex = 8;
+            this.btnPlotEnabled.Text = "Disable Plotting";
+            this.btnPlotEnabled.UseVisualStyleBackColor = true;
+            this.btnPlotEnabled.Click += new System.EventHandler(this.btnPlotEnabled_Click);
             // 
             // backgroundWorker1
             // 
@@ -223,7 +224,7 @@
             this.Controls.Add(this.label5);
             this.Controls.Add(this.updSamplingFrequency);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnPlotEnabled);
             this.Controls.Add(this.treeView1);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -235,8 +236,9 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmScope";
             this.Text = "Scope";
+            this.DockStateChanged += new System.EventHandler(this.frmScope_DockStateChanged);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmScope_FormClosing);
             this.Load += new System.EventHandler(this.frmScope_Load);
-            this.DockChanged += new System.EventHandler(this.frmScope_DockChanged);
             this.VisibleChanged += new System.EventHandler(this.frmScope_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.updYScale)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.updXScale)).EndInit();
@@ -245,6 +247,7 @@
             this.PerformLayout();
 
         }
+
 
         #endregion
 
@@ -255,7 +258,7 @@
         private System.Windows.Forms.NumericUpDown updXScale;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TreeView treeView1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnPlotEnabled;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown updSamplingFrequency;
