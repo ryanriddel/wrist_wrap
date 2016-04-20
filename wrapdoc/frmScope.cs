@@ -21,6 +21,7 @@ namespace wrapdoc
         UInt16 samples = 0;
         DateTime lastInterval;
         UInt16 _sampleFrequency = 200;
+        double _trailingTimeMilliseconds = 1;
 
         Size initialSize;
 
@@ -32,20 +33,13 @@ namespace wrapdoc
             InitializeComponent();
         }
 
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void zedGraphControl1_Load(object sender, EventArgs e)
         {
 
         }
 
-        private void numericUpDown2_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
+        
 
         private void frmScope_Load(object sender, EventArgs e)
         {
@@ -56,12 +50,17 @@ namespace wrapdoc
 
             initialSize=this.Size;
             lastInterval = DateTime.Now;
+
+            _trailingTimeMilliseconds = Convert.ToUInt32(updXScale.Value);
+            _sampleFrequency = Convert.ToUInt16(updSamplingFrequency.Value);
+            zedGraphControl1.GraphPane.XAxis.MinAuto = false;
+
             backgroundWorker1.RunWorkerAsync();
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            Debug.WriteLine("enabled");
+            Debug.WriteLine("Plotting Enabled.");
             while (_blPlottingEnabled && !backgroundWorker1.CancellationPending)
             {
 
@@ -70,17 +69,16 @@ namespace wrapdoc
 
                 if (span.TotalMilliseconds >= 1000.0/_sampleFrequency)
                 {
+                    //NOTE: The microcontroller is going to enforce timestamps
 
                     iterator++;
-                    zedGraphControl1.GraphPane.CurveList[0].AddPoint(iterator, Math.Sin(iterator *2 * Math.PI / _sampleFrequency));
-                    samples++;
 
-                    zedGraphControl1.GraphPane.XAxis.MinAuto = false;
-                    Debug.WriteLine(iterator-500);
-                    zedGraphControl1.GraphPane.XAxis.Min = iterator > 1000 ? iterator - 1000 : 0;
-                    zedGraphControl1.GraphPane.XAxis.Max = iterator + 5;
+                    zedGraphControl1.GraphPane.CurveList[0].AddPoint(iterator*1000/_sampleFrequency, Math.Sin(iterator *2 * Math.PI / _sampleFrequency));
+                    
+                    zedGraphControl1.GraphPane.XAxis.Min = iterator * 1000 / _sampleFrequency > _trailingTimeMilliseconds ? (iterator) * 1000 / _sampleFrequency - _trailingTimeMilliseconds : 0;
+                    zedGraphControl1.GraphPane.XAxis.Max = iterator * 1000 / _sampleFrequency;
 
-                    if (zedGraphControl1.GraphPane.CurveList[0].Points.Count > 1000) zedGraphControl1.GraphPane.CurveList[0].Points.RemoveAt(0);
+                    if (zedGraphControl1.GraphPane.CurveList[0].Points[0].X<zedGraphControl1.GraphPane.XAxis.Min) zedGraphControl1.GraphPane.CurveList[0].Points.RemoveAt(0);
 
                     zedGraphControl1.AxisChange();
                     zedGraphControl1.Invalidate();
@@ -133,11 +131,6 @@ namespace wrapdoc
             }
         }
 
-        private void frmScope_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            
-        }
-
         private void btnPlotEnabled_Click(object sender, EventArgs e)
         {
             if (!backgroundWorker1.IsBusy)
@@ -152,6 +145,17 @@ namespace wrapdoc
 
                 btnPlotEnabled.Text = "Enable Plotting";
             }
+        }
+
+        private void updXScale_ValueChanged(object sender, EventArgs e)
+        {
+            //trailing time
+            _trailingTimeMilliseconds = Convert.ToDouble(updXScale.Value);
+        }
+
+        private void updYScale_ValueChanged(object sender, EventArgs e)
+        {
+
         }
 
         

@@ -48,8 +48,8 @@ namespace wrapdoc
             double sampleRate = (double)parameterList[2];
             PointPairList returnObject = new PointPairList();
 
-            numSamples = Math.Min(numSamples, input.Data.Count);
-            //Real FFT transforms for odd N is twice as slow as even N,
+            numSamples = Math.Min(numSamples, input._data.Count);
+            //Real FFT transforms for odd N is twice as slow as even N;
             //when N is large changing it by 1 won't matter, so make N even.
             if (numSamples % 2 == 1) numSamples--;
 
@@ -57,7 +57,7 @@ namespace wrapdoc
 
             System.Numerics.Complex[] output = new System.Numerics.Complex[numSamples];
 
-            for (int i = 0; i < numSamples; i++) output[i] = input.Data[input.Data.Count - 1 - i].Y;
+            for (int i = 0; i < numSamples; i++) output[i] = input._data[input._data.Count - 1 - i].getData();
 
             MathNet.Numerics.IntegralTransforms.Fourier.Forward(output);
 
@@ -79,18 +79,18 @@ namespace wrapdoc
             DataRecord input = (DataRecord)parameterList[0];
             Int64 numSamples = (Int64)parameterList[1];
 
-            double movingAverage = calculateMean(input.Data, numSamples);
+            double movingAverage = calculateMean(input._data, numSamples);
 
-            return input.Data[input.Data.Count - 1].Y - movingAverage;
+            return input._data[input._data.Count - 1].getData() - movingAverage;
 
         }
 
-        static double calculateMean(PointPairList data, Int64 numSamples)
+        static double calculateMean(List<DataPoint> data, Int64 numSamples)
         {
             double sum = 0;
             numSamples = Math.Min(numSamples, data.Count);
 
-            for (int i = 0; i < numSamples; i++) sum += data[data.Count - i - 1].Y;
+            for (int i = 0; i < numSamples; i++) sum += data[data.Count - i - 1].getData();
 
             return sum / numSamples;
         }

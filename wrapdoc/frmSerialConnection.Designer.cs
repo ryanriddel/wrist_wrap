@@ -37,11 +37,12 @@
             this.label2 = new System.Windows.Forms.Label();
             this.serialPortComboBox = new System.Windows.Forms.ComboBox();
             this.serialPort = new System.IO.Ports.SerialPort(this.components);
+            this.serialHandler = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // serialConnectButton
             // 
-            this.serialConnectButton.Location = new System.Drawing.Point(22, 97);
+            this.serialConnectButton.Location = new System.Drawing.Point(42, 97);
             this.serialConnectButton.Name = "serialConnectButton";
             this.serialConnectButton.Size = new System.Drawing.Size(182, 23);
             this.serialConnectButton.TabIndex = 2;
@@ -51,7 +52,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(19, 22);
+            this.label1.Location = new System.Drawing.Point(39, 22);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(58, 13);
             this.label1.TabIndex = 1;
@@ -59,15 +60,15 @@
             // 
             // serialConnectTextBox
             // 
-            this.serialConnectTextBox.Location = new System.Drawing.Point(22, 136);
+            this.serialConnectTextBox.Location = new System.Drawing.Point(8, 136);
             this.serialConnectTextBox.Name = "serialConnectTextBox";
-            this.serialConnectTextBox.Size = new System.Drawing.Size(182, 87);
+            this.serialConnectTextBox.Size = new System.Drawing.Size(253, 87);
             this.serialConnectTextBox.TabIndex = 3;
             this.serialConnectTextBox.Text = "";
             // 
             // baudRateTextBox
             // 
-            this.baudRateTextBox.Location = new System.Drawing.Point(83, 57);
+            this.baudRateTextBox.Location = new System.Drawing.Point(103, 57);
             this.baudRateTextBox.Name = "baudRateTextBox";
             this.baudRateTextBox.Size = new System.Drawing.Size(121, 20);
             this.baudRateTextBox.TabIndex = 5;
@@ -77,7 +78,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(19, 60);
+            this.label2.Location = new System.Drawing.Point(39, 60);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(61, 13);
             this.label2.TabIndex = 4;
@@ -86,16 +87,20 @@
             // serialPortComboBox
             // 
             this.serialPortComboBox.FormattingEnabled = true;
-            this.serialPortComboBox.Location = new System.Drawing.Point(83, 19);
+            this.serialPortComboBox.Location = new System.Drawing.Point(103, 19);
             this.serialPortComboBox.Name = "serialPortComboBox";
             this.serialPortComboBox.Size = new System.Drawing.Size(121, 21);
             this.serialPortComboBox.TabIndex = 0;
+            // 
+            // serialHandler
+            // 
+            this.serialHandler.DoWork += new System.ComponentModel.DoWorkEventHandler(this.serialHandler_DoWork);
             // 
             // frmSerialConnection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(226, 255);
+            this.ClientSize = new System.Drawing.Size(268, 255);
             this.Controls.Add(this.serialConnectButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.serialConnectTextBox);
@@ -122,5 +127,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox serialPortComboBox;
         public System.IO.Ports.SerialPort serialPort;
+        private System.ComponentModel.BackgroundWorker serialHandler;
     }
 }

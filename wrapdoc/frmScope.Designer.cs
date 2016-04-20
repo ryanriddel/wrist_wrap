@@ -80,7 +80,7 @@
             0,
             0,
             0});
-            this.updYScale.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.updYScale.ValueChanged += new System.EventHandler(this.updYScale_ValueChanged);
             // 
             // label1
             // 
@@ -111,7 +111,7 @@
             0});
             this.updXScale.Location = new System.Drawing.Point(3, 99);
             this.updXScale.Maximum = new decimal(new int[] {
-            200,
+            100000,
             0,
             0,
             0});
@@ -120,11 +120,11 @@
             this.updXScale.TabIndex = 3;
             this.updXScale.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.updXScale.Value = new decimal(new int[] {
-            1,
+            1000,
             0,
             0,
             0});
-            this.updXScale.ValueChanged += new System.EventHandler(this.numericUpDown2_ValueChanged);
+            this.updXScale.ValueChanged += new System.EventHandler(this.updXScale_ValueChanged);
             // 
             // label3
             // 
@@ -237,7 +237,6 @@
             this.Name = "frmScope";
             this.Text = "Scope";
             this.DockStateChanged += new System.EventHandler(this.frmScope_DockStateChanged);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmScope_FormClosing);
             this.Load += new System.EventHandler(this.frmScope_Load);
             this.VisibleChanged += new System.EventHandler(this.frmScope_VisibleChanged);
             ((System.ComponentModel.ISupportInitialize)(this.updYScale)).EndInit();

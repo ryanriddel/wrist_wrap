@@ -10,47 +10,58 @@ namespace wrapdoc
 {
     public class DataRecord
     {
-        public static UInt32 MAX_LENGTH = 1000; 
+        public static UInt32 MAX_LENGTH = 1000;
         
-        public PointPairList Data;
-        public string Name;
-        
+        /*   Naming convention:
+         *   ADC records are named "Channel N"
+         *   Operator records are named "{Operation Name} N", where N is the Nth operation of that kind
+         *   Serial input is the name of the port i.e. "COM4"
+         * */
 
-        public DataRecord(string _name)
+        public string  _name;
+        public List<DataPoint> _data;
+
+        public DataRecord(string name)
         {
-            Name = _name;
+            _name = name;
         }
 
-        public PointPair getLastPointPair()
+        public PointPair getLastPointPair(byte channel=0)
         {
             PointPair obj;
-            lock(Data)
+            lock (_data)
             {
-                obj=Data[Data.Count-1];
+                obj = new PointPair(_data[_data.Count - 1].getTimeStamp(), _data[_data.Count - 1].getData(channel));
             }
             return obj;
         }
 
-        public PointPair getPointPairAt(int index)
+        public PointPair getPointPairAt(int index, byte channel=0)
         {
             PointPair obj;
-            lock (Data)
+            lock (_data)
             {
-                if (index < Data.Count) obj = Data[index];
+                if (index < _data.Count) obj = new PointPair(_data[index].getTimeStamp(), _data[index].getData(channel));
                 else throw new Exception("Invalid index.");
             }
             return obj;
         }
 
-        public void addPointPair(PointPair newPoint)
+        public void addDataPoint(DataPoint dataPoint)
         {
-            lock (Data)
+            lock (_data)
             {
-                Data.Add(newPoint);
+                _data.Add(dataPoint);
 
-                if (Data.Count > MAX_LENGTH) Data.RemoveAt(0);
+                if (_data.Count > MAX_LENGTH) _data.RemoveAt(0);
             }
             return;
+        }
+
+        public DataPoint getDataPoint(int index)
+        {
+            //a test to see if we need locking
+            return _data[index].getDataPoint();
         }
 
         public static double getXDateNow()
@@ -68,14 +79,53 @@ namespace wrapdoc
 
         public void clearRecord()
         {
-            lock (Data)
+            lock (_data)
             {
-                Data.Clear();
+                _data.Clear();
             }
             return;
         }
 
+        //add an "onupdate" event
+
         
-        
+    }
+
+    public class DataPoint
+    {
+        double _timestamp;
+
+        UInt16[] _data;
+
+        public DataPoint(double timestamp)
+        {
+            _timestamp = timestamp;
+            _data=new UInt16[16];
+        }
+
+        public void setData(UInt16 data, byte channel=0)
+        {
+            _data[channel]=data;
+        }
+
+        public UInt16 getData(byte channel=0)
+        {
+            return _data[channel];
+        }
+
+        public DataPoint getDataPoint()
+        {
+            return this;
+        }
+
+        public double getTimeStamp()
+        {
+            return _timestamp;
+        }
+
+        public void setTimestamp(double timestamp)
+        {
+            _timestamp = timestamp;
+        }
     }
 }

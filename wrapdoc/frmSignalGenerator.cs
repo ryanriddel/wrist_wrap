@@ -46,7 +46,7 @@ namespace wrapdoc
                     {
                         _iSignalNumber++;
                         _dataRecord = new DataRecord(_sSignalType + " " + _dFrequency.ToString() + "Hz " + _iSignalNumber);
-                        _parentForm.dataRecordDictionary.Add(_dataRecord.Name, _dataRecord);
+                        _parentForm.dataRecordDictionary.Add(_dataRecord._name, _dataRecord);
                     }
                 }
                 else
@@ -68,7 +68,7 @@ namespace wrapdoc
         {
             if (_sSignalType == "Sinusoidal")
             {
-               _dataRecord.addPointPair(new ZedGraph.PointPair(DataRecord.getXDateNow(), _dAmplitude*Math.Sin(2*Math.PI*iteratorVariable*timer1.Interval/(_dFrequency*1000))));
+               //_dataRecord.addPointPair(new ZedGraph.PointPair(DataRecord.getXDateNow(), _dAmplitude*Math.Sin(2*Math.PI*iteratorVariable*timer1.Interval/(_dFrequency*1000))));
                iteratorVariable++;
             }
             
