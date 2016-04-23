@@ -49,19 +49,18 @@ namespace wrapdoc
         {
             serialPort.BaudRate = (int) baudRate;
             serialPort.PortName = portName;
-
+            serialPort.StopBits = StopBits.One;
             try
             {
                 serialPort.Open();
                 serialPort.DtrEnable = true;
                 serialPort.RtsEnable = true;
 
+                serialPortComboBox.Text = serialPort.PortName;
                 if (_dataRecord == null)
                 {
                     _dataRecord = new DataRecord(serialPort.PortName);
                     _parentForm.dataRecordDictionary.Add(_dataRecord._name, _dataRecord);
-
-                    Debug.WriteLine("PORT INIT SUCCESS");
 
                     establishConnection();
                     serialHandler.RunWorkerAsync();
@@ -85,7 +84,7 @@ namespace wrapdoc
 
         public event serialReadEventHandler serialDataReceived;
 
-        bool establishConnection()
+        void establishConnection()
         {
             //send a packet that instructs the microcontroller to start
             //and requests a special packet that contains the start time
@@ -94,7 +93,6 @@ namespace wrapdoc
            
             serialPort.Write("INIT");
             
-            return false;
         }
 
         double parseTimestamp(byte[] data)
@@ -121,7 +119,7 @@ namespace wrapdoc
         //we'll define data packet sizes once the uC tells
         //us how many channels we're using.
         byte configPacketSizeBytes = 10; //in bytes
-        byte dataPacketSizeBytes = 2;
+        byte dataPacketSizeBytes = 9;
         
         private void serialHandler_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -147,15 +145,18 @@ namespace wrapdoc
                             //parse it
 
                             //respond
+                            
                             serialPort.Write("READY");
                             Debug.WriteLine("READY FOR DATA");
                             _serialInitialized = true;
+                            System.Threading.Thread.Sleep(1000);
                         }
 
                     }
                     else
                     {
-
+                        serialPort.Write("INIT");
+                        System.Threading.Thread.Sleep(1000);
                     }
                 }
                 else
@@ -171,16 +172,22 @@ namespace wrapdoc
                         if (data[0] != 33 || data[1] != 33 || data[2] != 33)
                         {
                             //check for the packet header
-                        //    serialPort.DiscardInBuffer();
+                            serialPort.DiscardInBuffer();
                         }
-                        Debug.Write("DATA: ");
-                        for (int i = 0; i < dataPacketSizeBytes; i++)
+                        else
                         {
-                            Debug.Write(" " + data[i]);
-                            //thing.Append(data[i] + " ");
-                        }
+                            Debug.Write("DATA: ");
+                            StringBuilder thing = new StringBuilder();
+                            for (int i = 0; i < dataPacketSizeBytes; i++)
+                            {
+                                Debug.Write(" " + data[i]);
+                                thing.Append(data[i] + " ");
+                            }
 
-                        Debug.WriteLine(" ");
+                            Debug.WriteLine(" ");
+
+                            this.Invoke(new MethodInvoker(delegate { this.serialConnectTextBox.Text = thing.ToString(); }));
+                        }
                     }
 
 

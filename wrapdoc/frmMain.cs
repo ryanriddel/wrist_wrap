@@ -18,7 +18,7 @@ namespace wrapdoc
 
         frmSerialConnection serialConnection=null;
         static string DEFAULT_PORT_NAME = "COM3";
-        static UInt32 DEFAULT_BAUD_RATE = 500000;
+        static UInt32 DEFAULT_BAUD_RATE = 250000;
         
         
         frmInputConfiguration inputConfiguration = null;

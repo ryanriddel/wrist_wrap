@@ -56,3 +56,4 @@ C:\Users\riddelr\Dropbox\WristWrap\wristwrap\wrapdoc\obj\Debug\wrapdoc.Propertie
 C:\Users\riddelr\Dropbox\WristWrap\wristwrap\wrapdoc\obj\Debug\wrapdoc.csproj.GenerateResource.Cache
 C:\Users\riddelr\Dropbox\WristWrap\wristwrap\wrapdoc\obj\Debug\wrapdoc.exe
 C:\Users\riddelr\Dropbox\WristWrap\wristwrap\wrapdoc\obj\Debug\wrapdoc.pdb
+C:\Users\riddelr\Dropbox\WristWrap\wristwrap\wrapdoc\obj\Debug\wrapdoc.csprojResolveAssemblyReference.cache
