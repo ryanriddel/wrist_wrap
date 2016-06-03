@@ -56,6 +56,8 @@ namespace wrapdoc
             zedGraphControl1.GraphPane.XAxis.MinAuto = false;
 
             backgroundWorker1.RunWorkerAsync();
+
+
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)

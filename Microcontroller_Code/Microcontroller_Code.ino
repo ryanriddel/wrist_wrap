@@ -23,23 +23,6 @@ void setup()
 void loop() 
 {
 
-  /*while(true)
-  {
-
-     ADC_VALUE=random(0, (1<<12)-1);
-    ADC_VALUE=255;
-
-    //sendTimestamp();
-    
-    _channelNumber=0;
-    sendADCMessage(_channelNumber, ADC_VALUE);
-
-    delay(1);
-    if(_channelNumber<15) _channelNumber++;
-    else _channelNumber=0;
-  }*/
-
-
   
   
   if(!_blIsInitialized)
@@ -77,6 +60,18 @@ void loop()
   
   if(_blIsInitialized)
   {
+    //first process incoming message if one exists
+    if(Serial.available())
+    {
+
+
+
+
+      
+    }
+
+
+    
     ADC_VALUE=random(0, (1<<12)-1);
     ADC_VALUE=0;
 

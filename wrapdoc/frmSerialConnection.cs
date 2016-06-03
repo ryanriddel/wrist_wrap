@@ -32,6 +32,10 @@ namespace wrapdoc
         {
             InitializeComponent();
             _parentForm = parentForm;
+
+            _dataRecord = new DataRecord("Serial");
+            _parentForm.dataRecordDictionary.Add(_dataRecord._name, _dataRecord);
+           
         }
 
         private void frmSerialConnection_Load(object sender, EventArgs e)
@@ -86,29 +90,27 @@ namespace wrapdoc
 
         void establishConnection()
         {
-            //send a packet that instructs the microcontroller to start
-            //and requests a special packet that contains the start time
-            //the number of channels, and other config data
-
-           
             serialPort.Write("INIT");
-            
         }
 
         double parseTimestamp(byte[] data)
         {
-            return data[0] << 24 + data[1] << 16 + data[2] << 8 + data[3];
+            return data[3] << 24 + data[4] << 16 + data[5] << 8 + data[6];
         }
 
-        DataPoint parseSerialPacket(byte[] data)
+        DataPoint parseDataPacket(byte[] data)
         {
             double timestamp = parseTimestamp(data); ;
             
             DataPoint newDataPoint = new DataPoint(timestamp);
 
-            for (int i = 0; i<_numberOfInputChannels; i++)
+            for (int i = 7; i<_numberOfInputChannels; i++)
             {
-                newDataPoint.setData((UInt16) ((data[4 + 2 * i] << 4) * 0x0F + data[5 + 2 * i]), (byte) ((data[4 + 2 * i] >> 4) & 0x0F));
+                UInt16 value = (UInt16) (((UInt16)data[i]) << 12 + data[i + 1]);
+                byte channel = (byte) (data[i] >> 4);
+
+                newDataPoint.setData(value, channel);
+                Debug.WriteLine("Data point : " + value + ", " + channel);
             }
 
             return newDataPoint;
@@ -141,9 +143,9 @@ namespace wrapdoc
                         }
                         else
                         {
-                            //uC sent back ready message
-                            //parse it
-
+                            //parse config message
+                            _numberOfInputChannels = data[3];
+                            dataPacketSizeBytes = (byte) (3 + 4 + _numberOfInputChannels * 2); //header + timestamp + data
                             //respond
                             
                             serialPort.Write("READY");
@@ -176,6 +178,7 @@ namespace wrapdoc
                         }
                         else
                         {
+                            //This section parses incoming data
                             Debug.Write("DATA: ");
                             StringBuilder thing = new StringBuilder();
                             for (int i = 0; i < dataPacketSizeBytes; i++)
@@ -186,11 +189,32 @@ namespace wrapdoc
 
                             Debug.WriteLine(" ");
 
+                            _dataRecord.addDataPoint(parseDataPacket(data));
                             this.Invoke(new MethodInvoker(delegate { this.serialConnectTextBox.Text = thing.ToString(); }));
                         }
                     }
 
 
+                }
+            }
+        }
+
+        private void btnSendSerialMessage_Click(object sender, EventArgs e)
+        {
+            if (txtSerialOutput.Text != "")
+            {
+                try
+                {
+                    serialPort.Write(txtSerialOutput.Text);
+
+                }
+                catch (Exception er)
+                {
+                    MessageBox.Show(er.Message);
+                }
+                finally
+                {
+                    txtSerialOutput.Text = "";
                 }
             }
         }

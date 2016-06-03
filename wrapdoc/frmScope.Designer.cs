@@ -35,7 +35,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.updXScale = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
-            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.treeViewDataSource = new System.Windows.Forms.TreeView();
             this.btnPlotEnabled = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.label4 = new System.Windows.Forms.Label();
@@ -136,12 +136,12 @@
             this.label3.TabIndex = 6;
             this.label3.Text = "Scale:";
             // 
-            // treeView1
+            // treeViewDataSource
             // 
-            this.treeView1.Location = new System.Drawing.Point(3, 228);
-            this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(121, 269);
-            this.treeView1.TabIndex = 7;
+            this.treeViewDataSource.Location = new System.Drawing.Point(3, 228);
+            this.treeViewDataSource.Name = "treeViewDataSource";
+            this.treeViewDataSource.Size = new System.Drawing.Size(121, 269);
+            this.treeViewDataSource.TabIndex = 7;
             // 
             // btnPlotEnabled
             // 
@@ -225,7 +225,7 @@
             this.Controls.Add(this.updSamplingFrequency);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btnPlotEnabled);
-            this.Controls.Add(this.treeView1);
+            this.Controls.Add(this.treeViewDataSource);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.updXScale);
@@ -256,7 +256,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown updXScale;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.TreeView treeViewDataSource;
         private System.Windows.Forms.Button btnPlotEnabled;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Label label4;
